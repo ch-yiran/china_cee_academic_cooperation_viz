@@ -48,7 +48,7 @@
 
   // 加载Excel数据
   function loadExcelData() {
-      fetch('../data/1-中东欧-时间段-总量.xlsx')
+      fetch('./data/1-中东欧-时间段-总量.xlsx')
           .then(response => response.arrayBuffer())
           .then(buffer => {
               const workbook = XLSX.read(buffer, { type: 'array' });

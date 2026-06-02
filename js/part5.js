@@ -40,10 +40,10 @@ async function loadExcelData() {
         await loadSheetJSLibrary();
         
         const files = [
-            '../data/1-中东欧-时间段-总量.xlsx',
-            '../data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx',
-            '../data/3-中东欧-时间段-机构.xlsx',
-            '../data/中东欧16国.xlsx'
+            './data/1-中东欧-时间段-总量.xlsx',
+            './data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx',
+            './data/3-中东欧-时间段-机构.xlsx',
+            './data/中东欧16国.xlsx'
         ];
         
         const data = {};
@@ -103,10 +103,10 @@ async function loadExcelFile(filename) {
 function parseCountriesData(data) {
     const countries = [];
     
-    const countryList = data['../data/中东欧16国.xlsx'] || [];
-    const periodData = data['../data/1-中东欧-时间段-总量.xlsx'] || [];
-    const fieldData = data['../data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx'] || [];
-    const institutionData = data['../data/3-中东欧-时间段-机构.xlsx'] || [];
+    const countryList = data['./data/中东欧16国.xlsx'] || [];
+    const periodData = data['./data/1-中东欧-时间段-总量.xlsx'] || [];
+    const fieldData = data['./data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx'] || [];
+    const institutionData = data['./data/3-中东欧-时间段-机构.xlsx'] || [];
     
     console.log(`国家列表: ${countryList.length}个`);
     console.log(`时段数据: ${periodData.length}条`);

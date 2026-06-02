@@ -14,10 +14,10 @@ const SECONDARY_LIMIT = 12;
 
 // 路径
 const DATA_FILES = {
-    subjectMeta:    "../data/领域.xlsx",
-    aggregateFields:"../data/2-中东欧-时间段-领域.xlsx",
-    countryFields:  "../data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx",
-    countryList:    "../data/中东欧16国.xlsx"    
+    subjectMeta:    "./data/领域.xlsx",
+    aggregateFields:"./data/2-中东欧-时间段-领域.xlsx",
+    countryFields:  "./data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx",
+    countryList:    "./data/中东欧16国.xlsx"    
 
 };
 

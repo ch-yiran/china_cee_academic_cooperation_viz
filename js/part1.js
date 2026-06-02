@@ -69,15 +69,15 @@ async function loadData() {
   try {
     const [rowYear, rowCtry, rowWorld, rowField, rowCtryField,
            rowInstCeec, rowInstCn, rowCtryName, rowFieldDef] = await Promise.all([
-      fetchExcel('../data/1-中东欧-年份-总量.xlsx'),
-      fetchExcel('../data/1-中东欧-时间段-总量.xlsx'),
-      fetchExcel('../data/1-世界各国-时间段-总量.xlsx'),
-      fetchExcel('../data/2-中东欧-时间段-领域.xlsx'),
-      fetchExcel('../data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx'),
-      fetchExcel('../data/3-中东欧-时间段-机构.xlsx'),
-      fetchExcel('../data/3-中国-时间段-机构.xlsx'),
-      fetchExcel('../data/中东欧16国.xlsx'),
-      fetchExcel('../data/领域.xlsx'),
+      fetchExcel('./data/1-中东欧-年份-总量.xlsx'),
+      fetchExcel('./data/1-中东欧-时间段-总量.xlsx'),
+      fetchExcel('./data/1-世界各国-时间段-总量.xlsx'),
+      fetchExcel('./data/2-中东欧-时间段-领域.xlsx'),
+      fetchExcel('./data/2-中东欧前12国-时间段（仅20162020）-领域.xlsx'),
+      fetchExcel('./data/3-中东欧-时间段-机构.xlsx'),
+      fetchExcel('./data/3-中国-时间段-机构.xlsx'),
+      fetchExcel('./data/中东欧16国.xlsx'),
+      fetchExcel('./data/领域.xlsx'),
     ]);
 
     // ── 领域ID映射表 ──

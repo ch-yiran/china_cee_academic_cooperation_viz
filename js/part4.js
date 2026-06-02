@@ -498,15 +498,15 @@ async function main() {
   try {
     // 并行读取三个 Excel 源文件
     const [fieldPeriodRaw, institutionRaw, fieldMapRaw] = await Promise.all([
-      fetchExcel('../data/2-中东欧-时间段-领域.xlsx'),
-      fetchExcel('../data/3-中国-时间段-机构.xlsx'),
-      fetchExcel('../data/领域.xlsx')
+      fetchExcel('./data/2-中东欧-时间段-领域.xlsx'),
+      fetchExcel('./data/3-中国-时间段-机构.xlsx'),
+      fetchExcel('./data/领域.xlsx')
     ]);
 
     console.log('【数据读取成功】');
-    console.log('../data/2-中东欧-时间段-领域.xlsx:', fieldPeriodRaw.length, '条记录');
-    console.log('../data/3-中国-时间段-机构.xlsx:', institutionRaw.length, '条记录');
-    console.log('../data/领域.xlsx:', fieldMapRaw.length, '条记录');
+    console.log('./data/2-中东欧-时间段-领域.xlsx:', fieldPeriodRaw.length, '条记录');
+    console.log('./data/3-中国-时间段-机构.xlsx:', institutionRaw.length, '条记录');
+    console.log('./data/领域.xlsx:', fieldMapRaw.length, '条记录');
 
     // 图1：处理机构排名数据
     const chartAData = processChartA(institutionRaw);
