@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国与中东欧国家科研合作分析（2011-2020）</title>
+<!-- 引入 Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<!-- 引入 D3.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<!-- 引入 TopoJSON -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<!-- 引入 SheetJS 用于读取 Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="title" style="font-size:30px;font-weight:700;color:#00000085;font-family:'SimSun','宋体',sans-serif">中国与中东欧国家科研合作分析（2011-2020）</div>
+  <div class="nav-links">
+    <a href="#part1">概况总览</a>
+    <a href="#part2">梯队分析</a>
+    <a href="#part3">学科图谱</a>
+    <a href="#part4">机构分析</a>
+    <a href="#part5">模式聚类</a>
+  </div>
+</nav>
+
+<div class="part" id="part1">
+  <link rel="stylesheet" href="./css/part1.css">
+
+  <h1>科研合作总览</h1>
+
+  <!-- DRILLDOWN MODAL -->
+<div class="modal-overlay" id="drillModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-country" id="modalTitle">国家名<span id="modalTotal"></span></div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('drillModal').classList.remove('show')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="modal-section-title">Top 6 合作学科</div>
+        <div class="fbar-wrap" id="modalFieldBars"></div>
+      </div>
+      <div>
+        <div class="modal-section-title">一级学科结构</div>
+        <div class="chart-wrap" style="height:300px"><canvas id="modalRadar"></canvas></div>
+      </div>
+      <div class="modal-insight" id="modalInsight"></div>
+    </div>
+  </div>
+</div>
+
+<div class="hero-stats">
+  <div class="hero-stat"><div class="val" style="color:var(--teal)" id="h1">—</div><div class="lbl">十年合作论文总量（篇）</div></div>
+  <div class="hero-stat"><div class="val" style="color:var(--blue)" id="h2">—</div><div class="lbl">2020年度发文量（篇）</div></div>
+  <div class="hero-stat"><div class="val" style="color:var(--red)"  id="h3">—</div><div class="lbl">十年总增幅（2011→2020）</div></div>
+  <div class="hero-stat"><div class="val" style="color:var(--violet)" id="h4">—</div><div class="lbl">复合年均增长率（CAGR）</div></div>
+  <div class="hero-stat"><div class="val" style="color:var(--green)">16</div><div class="lbl">覆盖中东欧国家数</div></div>
+</div>
+
+<!-- MODULE 1 -->
+<section id="m1">
+  <div class="section-header">
+    <div class="section-title">时空总览 · 交互式地图 + 面积图双联动</div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+      <span style="font-size:16px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em">中东欧16国合作热力图</span>
+      <div style="display:inline-flex;border:1.5px solid var(--border);border-radius:6px;overflow:hidden">
+        <button class="ptab active" id="mapModeTotal"  onclick="setMapMode('total',this)">论文总量</button>
+        <button class="ptab"        id="mapModeGrowth" onclick="setMapMode('growth',this)">增长率</button>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <span style="font-size:16px;color:var(--text3);font-weight:600">2011</span>
+        <input type="range" id="yearSlider" min="0" max="9" value="0" step="1"
+               style="width:180px;accent-color:var(--blue);cursor:pointer"
+               oninput="onSliderChange(+this.value)">
+        <span style="font-size:16px;color:var(--text3);font-weight:600">2020</span>
+        <span id="yearLabel" style="font-size:16px;font-weight:800;color:var(--blue);min-width:38px;text-align:center">2011</span>
+        <button id="playBtn" onclick="togglePlay()" style="padding:4px 12px;border-radius:5px;font-size:16px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;font-weight:600">▶ 播放</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:stretch">
+      <div style="flex:0 0 48%;position:relative;background:#f8fafc;border-right:1px solid var(--border)">
+        <svg id="mapSvg" style="width:100%;height:420px;display:block"></svg>
+        <div id="mapLegend" style="position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:6px;padding:7px 11px;font-size:16px;color:var(--text2)"></div>
+        <div id="mapTip" style="position:fixed;pointer-events:none;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:16px;color:var(--text);box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:500;opacity:0;transition:opacity .15s"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;padding:14px 16px 10px;min-width:0">
+        <div style="font-size:16px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
+          各国逐年合作论文量（点击年份 → 地图同步）
+        </div>
+        <div style="position:relative;height:310px">
+          <canvas id="areaChart"></canvas>
+        </div>
+        <div id="areaLegend" style="padding:5px 2px 2px;border-top:1px solid var(--border);margin-top:5px"></div>
+      </div>
+    </div>
+
+    <div style="margin:10px 18px 14px;color:#1111117b">
+      拖动时间轴 → 地图实时切换；点击面积图某年 → 地图同步；点击地图国家 → 学科详情；点击"播放"→ 自动演变。
+    </div>
+  </div>
+
+  <div class="mini-stats">
+    <div class="mini-card teal"><div class="mv" style="color:var(--teal)" id="miniAvg">—</div><div class="ml">年均线性增长量</div></div>
+    <div class="mini-card">    <div class="mv" style="color:var(--blue)" id="miniCagr">—</div><div class="ml">CAGR 复合年均增长率</div></div>
+    <div class="mini-card red"><div class="mv" style="color:var(--red)" id="miniRatio">—</div><div class="ml">中东欧占国合总体比例提升</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">中东欧合作论文量 VS 中国国合总体（逐年）</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="trendChart"></canvas></div>
+      <div class="insight" id="trendInsight"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">中东欧论文量占中国国合总体比例（%）</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="ratioChart"></canvas></div>
+      <div class="insight teal" id="ratioInsight"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 2 -->
+<section id="m2">
+  <div class="section-header">
+    <div class="section-title">国别分布 · 合作规模对比</div>
+  </div>
+  <div class="period-toggle">
+    <button class="ptab active" onclick="switchPeriod('2011-2015',this)">2011–2015</button>
+    <button class="ptab" onclick="switchPeriod('2016-2020',this)">2016–2020</button>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">各国发文量排名</div>
+      <div class="cbar-wrap" id="countryBars"></div>
+      <div class="click-hint">点击任意国家条形 → 查看该国学科详细分布</div>
+      <div class="insight" id="countryInsight"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">两时间段发文量对比（Top 12）</div>
+      <div class="chart-wrap" style="height:550px"><canvas id="growthChart"></canvas></div>
+      <div class="insight red" id="growthInsight"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">全球合作伙伴排名 Top 40（2016–2020）— 蓝色高亮为中东欧国家，y轴为对数尺度</div>
+    <div class="chart-wrap" style="height:320px"><canvas id="worldRankChart"></canvas></div>
+    <div class="insight violet" id="worldInsight"></div>
+  </div>
+</section>
+
+<!-- MODULE 3 -->
+<section id="m3">
+  <div class="section-header">
+    <div class="section-title">学科领域 · 合作热点分布</div>
+  </div>
+  <div class="period-toggle">
+    <button class="ptab active" onclick="switchField('2011-2015',this)">2011–2015</button>
+    <button class="ptab" onclick="switchField('2016-2020',this)">2016–2020</button>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Top 10 合作学科领域</div>
+      <div class="fbar-wrap" id="fieldBars" style="height:400px"></div>
+      <br>
+      <div class="insight" id="fieldInsight"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">一级学科结构对比（雷达图）</div>
+      <div class="chart-wrap" style="height:400px"><canvas id="radarChart"></canvas></div>
+      <div class="insight teal" id="radarInsight"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">两时间段 Top 10 学科发文量对比</div>
+    <div class="chart-wrap" style="height:330px"><canvas id="fieldCompareChart"></canvas></div>
+    <div class="insight violet" id="fieldCmpInsight"></div>
+  </div>
+</section>
+
+<!-- MODULE 4 -->
+<section id="m4">
+  <div class="section-header">
+    <div class="section-title">核心机构 · 主要合作主体</div>
+  </div>
+  <div class="period-toggle">
+    <button class="ptab active" onclick="switchInst('2011-2015',this)">2011–2015</button>
+    <button class="ptab" onclick="switchInst('2016-2020',this)">2016–2020</button>
+  </div>
+  <div class="inst-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">▸ 中东欧侧 Top 10 机构</div>
+      <div class="inst-list" id="ceecInstList"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">▸ 中国侧 Top 10 机构</div>
+      <div class="inst-list" id="cnInstList"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">中东欧侧 Top 8 机构论文量</div>
+    <div class="chart-wrap" style="height:290px"><canvas id="instChart"></canvas></div>
+    <div class="insight orange" id="instInsight"></div>
+  </div>
+</section>
+<script src="./js/colors.js"></script>
+<script src="./js/part1.js"></script>
+</div>
+
+<div class="part" id="part2">
+<link rel="stylesheet" href="./css/part2.css">
+      <div class="container">
+        <!-- 调整为左对齐标题 -->
+        <h1>科研合作梯队分析</h1>
+        
+        <!-- 新增学术风格描述文本 -->
+        <div class="description">
+            <p>中国与中东欧及巴尔干国家学术合作总规模呈现清晰的三级梯队格局，波兰以10118篇总发文量居首，捷克、希腊、匈牙利、罗马尼亚紧随其后，这五个国家贡献了全部16国总发文量的65%以上，构成合作核心；塞尔维亚、斯洛文尼亚等6国为第二梯队，合作基础扎实；阿尔巴尼亚、黑山等5国为第三梯队，当前规模较小但潜力巨大。气泡图显示所有国家均位于等增长线上方，表明2016-2020年合作增长均快于平均水平，波兰、捷克气泡最大，增长势头持续强劲。</p>
+            <p>合作增长呈现"基数越小、增长越快"的显著特征，阿尔巴尼亚、黑山、拉脱维亚增长率均超900%，实现十倍以上爆发式增长，波黑也增长超4倍；北马其顿、保加利亚及波兰、捷克等头部国家增长率均超100%，在高基数基础上实现合作规模翻倍；塞尔维亚、斯洛文尼亚等6国增长率低于平均水平，其中塞尔维亚增长率最低（51.9%），增长动力相对不足。</p>
+            <p>2011-2020年中国与该区域学术合作实现全面快速增长，整体态势良好；合作格局呈现"头部稳固、尾部爆发"特点，传统大国贡献主要产出，小国成为新兴增长点；地区差异明显，中欧国家基础最好，巴尔干国家分化最显著，东欧国家中拉脱维亚表现突出；对于塞尔维亚等增长放缓国家，需结合其学科优势与产业需求，寻找新的合作切入点。</p>
+        </div>
+        
+        <!-- 调整为左对齐控制面板 -->
+        <div class="controls">
+            <div class="control-group">
+                <label>排名维度：</label>
+                <select id="rankType">
+                    <option value="total">总发文量排名</option>
+                    <option value="growth">增长率排名</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>地区筛选：</label>
+                <label><input type="checkbox" value="中欧" checked> 中欧</label>
+                <label><input type="checkbox" value="东欧" checked> 东欧</label>
+                <label><input type="checkbox" value="巴尔干" checked> 巴尔干</label>
+            </div>
+            <div class="control-group">
+                <button id="resetBtn">重置选择</button>
+            </div>
+        </div>
+        
+        <!-- 图表容器 -->
+        <!-- 图表容器 -->
+        <div class="charts-container">
+            <div class="chart-wrapper">
+                <h3>合作增长气泡图</h3>
+                <div id="bubbleChart"></div>
+                <div class="chart-note">
+                    <p>注：X轴为2011-2015年发文量（合作起点），Y轴为2016-2020年发文量（合作终点），气泡大小代表总发文量（2011-2020），虚线为等增长线（线上方表示增长快于平均水平）。</p>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <h3>国家合作排名</h3>
+                <div id="barChart"></div>
+            </div>
+        </div>
+        
+        <!-- 数据加载提示 -->
+        <div id="loading">正在加载数据...</div>
+    </div>
+
+<script src="./js/part2.js"></script>
+
+</div>
+
+<div class="part" id="part3">
+<link rel="stylesheet" href="./css/part3.css">
+    <div class="container">
+        <!-- 标题 -->
+        <h1>科研合作学科领域分布图谱</h1>
+
+        <!-- 内容描述文本 -->
+        <div class="description">
+            <p>2016-2020年，我国与中东欧国家发表国际合作论文，在领域上显示出明显的学科差异。</p>
+            <p>从学科上看，理学、工学、医学是最主要的一级学科；其中，物理学、化学、生物学、天文学、数学五个理学的二级学科占比很高。物理学是我国与中东欧国家最主要的合作学科领域，发文量占比约28%。相比之下，其他一级学科的发文量很少，与三大主要学科差距很大。</p>
+            <p>从时间跨度上看，相比2011-2015年，2016-2020年我国与中东欧国家在各个学科的国际合作论文发文量没有明显变化。</p>
+            <p>从国别上看，大多数国家的主要合作领域与整体趋势类似，又体现出一定的国家特色，体现出不同的主要合作领域。例如，希腊的信息与通信工厂，捷克的仪器科学等。我国与不同的中东欧国家有着不同的主要合作倾向。</p>
+        </div>
+
+        <!-- 控制面板 -->
+        <div class="controls">
+            <div class="control-group action-group">
+                <button id="undoBtn" disabled>撤销</button>
+                <button id="redoBtn" disabled>恢复</button>
+                <button id="resetBtn">重置</button>
+            </div>
+
+            <div class="control-group">
+                <span class="status-label">当前一级学科：</span>
+                <span id="selectionStatus" class="focus-status">全部一级学科</span>
+            </div>
+
+            <div class="control-group grow country-control">
+                <label>当前国家：</label>
+                <div id="selectionOptions" class="compare-options"></div>
+                <div class="country-actions">
+                    <button id="selectAllBtn">全选</button>
+                    <button id="clearAllBtn">全部取消</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="charts-container subject-layout">
+            <!-- 桑基图 -->
+            <div class="chart-wrapper sankey-wrapper">
+                <div class="chart-title-row">
+                    <h3>学科合作流向桑基图</h3>
+                    <span id="sankeySubtitle" class="chart-subtitle"></span>
+                </div>
+                <div id="sankeyChart"></div>
+                <div class="chart-note">
+                    <p>注：左侧为国家，中间为一级学科，右侧仅显示被展开一级学科下的二级学科。点击国家可选定或取消选定；点击一级学科可展开二级学科；点击二级学科可高亮该二级学科。桑基图始终展示全部国家数据，国家选择仅控制高亮显示与雷达图口径。</p>
+                </div>
+            </div>
+
+            <!-- 雷达图 -->
+            <div class="chart-wrapper radar-wrapper">
+                <div class="chart-title-row">
+                    <h3>学科占比雷达图</h3>
+                    <span id="radarSubtitle" class="chart-subtitle"></span>
+                </div>
+                <div id="radarChart"></div>
+                <div id="radarCaption" class="chart-note compact-note"></div>
+            </div>
+        </div>
+
+        <!-- 折线图（我觉得可以不要） -->
+        <div class="chart-wrapper full-width trend-wrapper">
+            <div class="chart-title-row">
+                <h3>学科热度变化趋势</h3>
+                <span class="chart-subtitle">整体口径：2011–2015 vs 2016–2020</span>
+            </div>
+            <div id="trendChart"></div>
+            <div class="chart-note">
+                <p>注：纵轴为该一级学科在对应时间段内的合作论文占比。</p>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">正在加载 Excel 数据...</div>
+    </div>
+
+    <div id="tooltip3" class="tooltip"></div>
+<script src="./js/part3.js"></script>
+</div>
+
+<div class="part" id="part4">
+<link rel="stylesheet" href="./css/part4.css">
+<h1>科研机构合作规模热点分析</h1>
+  <div class="container">
+    <!-- 加载状态提示 -->
+    <div id="loading-status" class="loading-box">
+      <p>正在从 Excel 源文件读取数据并筛选...</p>
+      <p class="loading-detail">读取：3-中国-时间段-机构.xlsx → 取各时段前15名 → 计算排名变化</p>
+      <p class="loading-detail">读取：2-中东欧-时间段-领域.xlsx + 领域.xlsx → 按一级学科汇总 → 计算增长率</p>
+    </div>
+
+    <!-- 图1：Bump Chart 排名变化 -->
+    <div class="chart-section" id="section-a" style="display:none;">
+      <div class="chart-title">中国科研机构合作排名变化轨迹</div>
+      <div class="chart-area" id="chart-a"></div>
+      <div class="interpretation">
+        <h3>图表解读</h3>
+        <p>2011-2015年，中国科学院以2598篇高居合作论文榜首，是第二名中科院高能所（1022篇）的2.5倍，呈现出明显的"一家独大"格局。五年后，清华大学以1685篇跃居第一，北京大学以1535篇紧随其后，榜首位置从科研院所转移到了综合性大学。与此同时，中国科学院作为统一署名机构完全消失于前15名，中科院近代物理所也退出榜单。</p>
+        <p>这种"消失"更可能是统计口径变化而非合作萎缩。2016年后，Web of Science对中科院各研究所的署名拆分趋于精细，原先归在"Chinese Academy of Sciences"名下的论文被分散到高能所、近代物理所等二级单位——这恰好解释了为何高能所论文数从1022增至1382、排名却从第2跌至第3：部分增量实为署名重新归属的结果，而非新增合作。</p>
+        <p>中国科学院大学（156篇→1318篇）和北京航空航天大学（140篇→833篇）在2011-2015年已有产出，但直到2016-2020年才进入前15，说明它们并非"从零开始"，而是在合作总量扩张期凭借增速优势挤入前列。上海交通大学是上升幅度最大的传统强校，论文数从488篇翻倍至1054篇，排名从第9升至第6，可能受益于其更广泛的学科覆盖面和成熟的国际交流机制。</p>
+        <p>一个反直觉的现象是：13个在两个时段均保持前15的机构中，有9个排名下滑——包括论文数增长的中科院高能所、山东大学（616→829篇，第6→第9）、南京大学（546→803篇，第8→第10）。这意味着2016-2020年合作论文总量大幅扩张，新参与者涌入稀释了原有机构的份额优势；维持排名所需的论文增速超过了多数机构的实际增速。唯一排名不变的是中山大学（596→989篇，均列第7），其稳定的位次可能暗示合作网络已趋于固化。</p>
+        <p>如果这一趋势延续，"论文增长但排名下滑"将成为常态。对机构而言，在扩张市场中绝对产出比相对位次更能反映实际参与度；同时，署名规范化趋势要求避免将机构层面的统计波动误读为合作意愿变化。</p>
+      </div></div>
+
+    <!-- 图2：玫瑰图 -->
+    <div class="chart-section" id="section-c" style="display:none;">
+      <div class="chart-title">中国与中东欧合作学科学术规模与增长势头</div>
+      <div class="chart-subtitle">扇区半径=2016-2020年论文数取根号，扇区颜色=相对2011-2015年的增长率；半径越大代表当前合作规模越大，颜色越红代表增长越迅猛</div>
+      <div class="chart-area" id="chart-c"></div>
+      <div class="interpretation">
+        <h3>图表解读</h3>
+        <p>2016-2020年，理学（15326篇）与工学（15318篇）的扇区半径远超其他学科，两者合计占总量的61%，构成绝对主导的"双极"格局。但它们的增长率分别为88%和156%，在全部13个学科中处于中下游——高体量与低增速的组合符合成熟领域的典型特征：合作网络在2011-2015年已较为完备，后续进入线性扩张期，增速受限于既有框架的边际递减效应。</p>
+        <p>增长率最高的是经济学（14篇→151篇，+979%）、交叉领域（135篇→398篇，+195%）和文学（31篇→85篇，+174%）。然而，14篇的基数意味着单篇增量即可造成大幅百分比波动，经济学的近10倍增长更多反映"从零到一"的突破——如首个联合研究项目或首篇合作论文——而非规模性扩张。但结合"17+1合作"机制2012年建立的时间点，这一突破本身具有制度信号意义：经贸合作议题开始进入学术生产领域。</p>
+        <p>人文社科（哲学、文学、历史学、艺术学）的集体高增速（均超110%）提示合作领域正在拓宽，但尚未深化——论文数仍停留在两位数，说明合作多为试探性、项目驱动型，尚未形成稳定的学术共同体。这与理工科动辄数千篇的体量差距，反映了学科间合作基础设施（联合实验室、长期访问学者机制、双语期刊）的不均衡。</p>
+        <p>医学以4697篇位居第三，增长率125%，处于"规模较大且增速中等"的中间带，与中东欧国家医学教育传统和中国医疗合作需求（如中医药推广、公共卫生经验分享）的双重驱动相吻合。</p>
+        <p>未来合作的结构性增量可能来自两个方向：一是交叉地带（如数字人文、环境经济学、科技政策），这些领域既需要理工技术支撑，又依赖人文社科的问题意识，可能打破现有"双极"格局；二是人文社科的基数扩张，当前两位数论文量意味着巨大增长空间，但需要制度性投入将试探性合作转化为持续性产出。理学与工学的"底盘"地位短期内不会改变，但增速放缓提示：若要保持合作活力，需要在这些成熟领域注入新议题（如人工智能伦理、碳中和技术转移），而非依赖原有路径的自然延伸。</p>
+      </div>
+    </div>
+    </div>
+
+<script src="./js/part4.js"></script>
+</div>
+
+
+
+<div class="part" id="part5">
+<link rel="stylesheet" href="./css/part5.css">
+    <div class="dashboard">
+        <!-- 描述文字 -->
+        <div class="intro-description">
+          <h1>科研合作模式聚类分析</h1>
+          <div class="description">
+            <p>为了展示中国与中东欧16国在科研合作中的差异化模式，识别各国在合作网络中的定位与角色，为深化区域科技合作提供数据参考。</p>
+            <p>该部分从<strong>合作规模、增长速度、领域广度、机构参与度、合作稳定性</strong>五个维度，系统评估各国合作表现，设置了全面深度合作型、快速增长型、领域聚焦型、起步探索型四个类型进行聚类分析。左侧雷达图矩阵展示各国五维能力画像，右侧聚类树将16国分为<strong>全面深度合作型、快速增长型、起步探索型</strong>三类。聚类结果显示16个国家里不存在满足领域聚焦型的国家。</p>
+          </div>
+        </div>
+
+        <!-- 筛选面板 -->
+        <div class="filter-panel">
+            <div class="filter-title">筛选与排序</div>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label>地区筛选：</label>
+                    <select id="regionSelect">
+                        <option value="all">全部国家</option>
+                        <option value="中欧">中欧</option>
+                        <option value="东欧">东欧</option>
+                        <option value="巴尔干">巴尔干</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>按维度排序：</label>
+                    <select id="sortBy">
+                        <option value="none">不排序</option>
+                        <option value="scale">合作规模</option>
+                        <option value="growth">增长速度</option>
+                        <option value="breadth">领域广度</option>
+                        <option value="institution">机构参与度</option>
+                        <option value="stability">合作稳定性</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>聚类筛选：</label>
+                    <select id="clusterFilter">
+                        <option value="all">全部类型</option>
+                        <option value="全面深度合作型">全面深度合作型</option>
+                        <option value="快速增长型">快速增长型</option>
+                        <option value="领域聚焦型">领域聚焦型</option>
+                        <option value="起步探索型">起步探索型</option>
+                    </select>
+                </div>
+                <div class="filter-stats" id="statsInfo">
+                    显示 <span id="visibleCount">0</span> / <span id="totalCount">0</span> 个国家
+                </div>
+            </div>
+        </div>
+
+        <!-- 左右两列布局 -->
+        <div class="two-columns">
+            <!-- 左侧：雷达图矩阵 -->
+            <div class="left-column">
+                <div class="section-title">
+                    <span>合作模式雷达图矩阵</span>
+                    <span class="hint">鼠标悬停查看详情 | 点击筛选</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">1 - 合作规模</div>
+                    <div class="legend-item">2 - 增长速度</div>
+                    <div class="legend-item">3 - 领域广度</div>
+                    <div class="legend-item">4 - 机构参与度</div>
+                    <div class="legend-item">5 - 合作稳定性</div>
+                </div>
+                <div id="radarMatrix" class="radar-matrix"></div>
+            </div>
+
+            <!-- 右侧：聚类树图 -->
+            <div class="right-column">
+                <div class="section-title">
+                    <span>合作模式聚类树</span>
+                    <span class="hint">点击聚类或国家进行筛选</span>
+                </div>
+                <div id="clusterTree" class="cluster-tree"></div>
+                <!-- 聚类树分析文字 - 一段话 -->
+
+                <div class="cluster-analysis">
+                    <p><strong>波兰是唯一的全面深度合作型标杆。</strong>其合作规模以10 118篇论文达到归一化上限（100%），覆盖13个一级学科（广度92.9%），并吸纳173个机构参与，机构参与度（27.3%）超过第二名捷克近一倍。高达93.3%的稳定性说明合作已超越单纯的数量扩张，形成了多元、持续且具备深度的成熟关系。</p>
+                    <p><strong>快速增长型涵盖拉脱维亚、黑山与阿尔巴尼亚。</strong>三国论文总量极小（77–1125篇），但增速惊人（70.7%–78.9%），远高于均值。然而其稳定性仅约40%，学科覆盖近乎为零，揭示出现阶段的合作更多是“井喷式”规模爆发，往往由个别项目或机构拉动，根基较为薄弱，亟需在机构参与和学科多样性上补强，方可能转为稳健增长。</p>
+                    <p><strong>起步探索型占据多数，包含12个国家，内部又可细分。</strong>捷克、希腊、匈牙利、罗马尼亚等国论文绝对量可观（如捷克7 513篇），但因增速平缓、机构参与度普遍不足17%，在归一化评估中被归入起步型；而马其顿、波黑等小国则各项指标全面偏低。值得注意的是，该类型普遍拥有极高的合作稳定性（多国达到100%），表明尽管扩张缓慢，但合作行为连续、波动极小。</p>
+                    <p>总体而言，中东欧16国与中国的科研合作呈现深度分化的金字塔结构。波兰一骑绝尘，少数国家快速追赶，而多数国家仍处于“有规模无深度”或“规模与深度均欠缺”的初级阶段。未来，能否在优势学科上实现聚焦、提升机构参与的广度和粘性，将是各国跃升聚类层级的关键。</p>
+                </div>
+            </div>
+
+        <div id="detailTooltip" class="detail-tooltip"></div>
+    </div>
+    </div>
+    <br>
+    <br>
+    <br>
+<script src="./js/part5.js"></script>
+</div>
+
+</body>
+</html>
