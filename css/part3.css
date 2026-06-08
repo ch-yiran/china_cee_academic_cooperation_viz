@@ -1,94 +1,109 @@
-/* ─── 1. 基础排版 ───*/
-* {
-    margin: 0;
-    padding: 0;
+/* ─────────────────────────────────────────────
+   Part 3 · 科研合作学科领域分布图谱
+   修正版：仿 Part4 白色卡片/框线风格，并优化趋势图样式
+   ───────────────────────────────────────────── */
+
+/* 1. 基础排版：限定作用域，避免影响其他 part */
+#part3,
+#part3 * {
     box-sizing: border-box;
-    font-family: "Times New Roman", "SimSun", serif;
+    font-family: "SimSun", "宋体", "Times New Roman", serif;
 }
 
-body {
-    background-color: #ffffff;
+#part3 {
+    background: #fafafa;
     color: #333333;
     line-height: 1.6;
     font-size: 16px;
 }
 
-/* ─── 2. 页面布局 ─── */
-.container {
+#part3 .container {
     max-width: 1360px;
     margin: 0 auto;
     padding: 40px 56px 64px;
 }
 
-h1 {
+#part3 h1 {
     text-align: center;
-    margin-bottom: 18px;
+    margin: 0 0 18px;
     color: #162033;
     font-weight: 800;
     font-size: 28px;
     letter-spacing: 0.5px;
 }
 
-.description {
+#part3 .description {
     margin-bottom: 34px;
+    padding: 22px 26px;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #2c3e50;
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.85;
     color: #333333;
     text-align: justify;
 }
 
-.description p {
-    margin-bottom: 14px;
+#part3 .description p {
+    margin: 0 0 14px;
     text-indent: 2em;
 }
 
-/* ─── 3. 控制栏 ─── */
-.controls {
+#part3 .description p:last-child {
+    margin-bottom: 0;
+}
+
+/* 2. 控制栏 */
+#part3 .controls {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-bottom: 38px;
-        margin-bottom: 38px;
-        padding: 14px 18px 18px;
-    border-bottom: 1px solid #eeeeee;
-        border: 1px solid #e7ebf1;
-        border-radius: 16px;
+    flex-wrap: wrap;
     gap: 16px 22px;
+    margin-bottom: 38px;
+    padding: 16px 20px 18px;
+    background: #ffffff;
+    border: 1px solid #e8edf3;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.control-group {
+#part3 .control-group {
     display: flex;
     align-items: center;
     gap: 10px;
     min-height: 32px;
+    font-size: 16px;
 }
-        font-size: 16px;
 
-.control-group.grow {
+#part3 .control-group.grow {
     flex: 1 1 680px;
     align-items: flex-start;
 }
 
-.country-control {
-        font-size: 16px;
+#part3 .country-control {
+    font-size: 16px;
 }
 
-.country-actions {
+#part3 .country-control > label {
+    margin-top: 5px;
+}
+
+#part3 .country-actions {
     display: inline-flex;
-        padding: 8px 14px;
     gap: 8px;
-        border-radius: 10px;
     flex-shrink: 0;
 }
-        font-size: 16px;
-.control-group label,
-.status-label {
+
+#part3 .control-group label,
+#part3 .status-label {
     font-weight: 500;
     color: #444444;
     white-space: nowrap;
 }
 
-.focus-status {
+#part3 .focus-status {
     padding: 4px 10px;
     border: 1px solid #e5e5e5;
     background-color: #fafafa;
@@ -97,9 +112,9 @@ h1 {
     border-radius: 2px;
 }
 
-button {
-    padding: 5px 14px;
-    border: 1px solid #dddddd;
+#part3 button {
+    padding: 6px 12px;
+    border: 1px solid #d7dde5;
     border-radius: 2px;
     background-color: #ffffff;
     cursor: pointer;
@@ -107,331 +122,393 @@ button {
     color: #444444;
     font-family: inherit;
     box-shadow: none;
-        padding: 6px 10px;
-
-button:hover {
-        font-size: 16px;
-    border-color: #cccccc;
 }
 
-button:disabled {
+#part3 button:hover {
+    border-color: #2c3e50;
+    color: #162033;
+    background-color: #f8f9fa;
+}
+
+#part3 button:disabled {
     color: #aaaaaa;
     background-color: #f7f7f7;
     border-color: #eeeeee;
     cursor: not-allowed;
 }
 
-        font-weight: 700;
-        font-size: 20px;
+#part3 .compare-options {
+    display: flex;
     flex-wrap: wrap;
     gap: 7px 8px;
+    align-items: center;
+    min-height: 32px;
 }
-        font-size: 16px;
-.compare-pill {
+
+#part3 .compare-pill {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 8px;
-        font-size: 16px;
+    padding: 3px 9px;
+    border: 1px solid #eeeeee;
     border-radius: 999px;
     font-size: 13px;
     line-height: 1.5;
     color: #555555;
     background-color: #ffffff;
     cursor: pointer;
+    user-select: none;
 }
 
-.compare-pill:hover {
+#part3 .compare-pill:hover {
     background-color: #f8f8f8;
-        border-radius: 10px;
+    border-color: #d7dde5;
+}
 
-        font-size: 16px;
+#part3 .compare-pill input {
     accent-color: #5a7ca8;
 }
 
-/* ─── 4. 图表区域布局 ─── */
-.charts-container {
+/* 3. 图表卡片：仿照 Part4 的 chart-section */
+#part3 .charts-container {
     display: grid;
-    gap: 44px;
+    gap: 34px;
 }
 
-        font-size: 16px;
+#part3 .subject-layout {
     grid-template-columns: minmax(0, 1.55fr) minmax(390px, 0.95fr);
     align-items: start;
-    margin-bottom: 50px;
-        font-size: 16px;
-
-.chart-wrapper {
-    background-color: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-        font-size: 16px;
+    margin-bottom: 40px;
 }
 
-.chart-title-row {
+#part3 .chart-wrapper {
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #edf1f5;
+    padding: 25px 30px;
+    min-width: 0;
+    font-size: 16px;
+}
+
+#part3 .sankey-wrapper,
+#part3 .radar-wrapper,
+#part3 .trend-wrapper {
+    width: 100%;
+}
+
+#part3 .chart-title-row {
     display: flex;
-        font-size: 16px;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: baseline;
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border-left: 4px solid #2c3e50;
     flex-wrap: wrap;
-        font-size: 16px;
+}
 
-.chart-wrapper h3 {
+#part3 .chart-wrapper h3 {
     margin: 0;
-    color: #222222;
-    text-align: center;
-        font-size: 16px;
-    font-size: 18px;
+    color: #162033;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 800;
 }
 
-        font-size: 16px;
-    font-size: 13px;
-    color: #777777;
+#part3 .chart-subtitle {
+    font-size: 16px;
+    color: #888888;
 }
 
-        font-size: 16px;
+#part3 #sankeyChart,
+#part3 #radarChart,
+#part3 #trendChart {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#part3 #sankeyChart {
     height: 660px;
+    min-height: 560px;
+    overflow: visible;
 }
 
-#radarChart {
-    width: 100%;
-        font-size: 16px;
+#part3 #radarChart {
+    min-height: 560px;
     height: auto;
 }
 
-#trendChart {
-    width: 100%;
-    height: 430px;
+#part3 #trendChart {
+    height: 540px;
+    min-height: 520px;
+    padding-top: 8px;
 }
 
-.full-width {
+#part3 .full-width {
     width: 100%;
 }
 
-        font-size: 16px;
-.trend-wrapper {
+#part3 .trend-wrapper {
     margin-top: 0;
 }
 
-.chart-note {
-    margin-top: 16px;
-    font-size: 13px;
-    color: #666666;
-    line-height: 1.8;
+/* 4. 图表说明：仿照 Part4 interpretation */
+#part3 .chart-note {
+    margin-top: 25px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-left: 3px solid #2c3e50;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: #555555;
+    line-height: 1.9;
 }
-        font-size: 16px;
-.compact-note {
-    margin-top: 6px;
+
+#part3 .chart-note p {
+    margin: 0;
+    text-align: justify;
 }
-        font-size: 24px;
-        font-weight: 800;
+
+#part3 .compact-note {
+    margin-top: 10px;
+}
+
+/* 5. Tooltip */
+#part3 .tooltip,
+#part3 #tooltip3 {
     position: absolute;
-        margin-bottom: 10px;
-        text-align: center;
-    background-color: rgba(255, 255, 255, 0.96);
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.96);
     color: #333333;
-    border: 1px solid #dddddd;
-        font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
     pointer-events: none;
-    font-size: 13px;
+    font-size: 15px;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.16s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     line-height: 1.6;
-        font-size: 16px;
+    font-family: "SimSun", "宋体", serif;
 }
 
-.tooltip-hint {
+#part3 .tooltip-hint,
+#part3 .tooltip3-hint {
     color: #777777;
-    font-size: 12px;
+    font-size: 13px;
 }
 
-/* ─── 5. 桑基图 ─── */
-.sankey-link {
+/* 6. 桑基图 */
+#part3 .sankey-link {
     fill: none;
     stroke-opacity: 0.28;
     mix-blend-mode: multiply;
     cursor: pointer;
-    transition: stroke-opacity 0.2s;
+    transition: stroke-opacity 0.2s, stroke-width 0.2s;
 }
 
-.sankey-link:hover {
+#part3 .sankey-link:hover {
     stroke-opacity: 0.65;
 }
 
-.sankey-link.selected {
+#part3 .sankey-link.selected {
     stroke-opacity: 0.68;
 }
 
-.sankey-link.secondary-selected {
+#part3 .sankey-link.secondary-selected {
     stroke-opacity: 0.78;
 }
 
-.sankey-link.context-link {
+#part3 .sankey-link.context-link {
     stroke-opacity: 0.07;
 }
 
-.sankey-node {
+#part3 .sankey-node {
     cursor: grab;
 }
 
-.sankey-node:active {
+#part3 .sankey-node:active {
     cursor: grabbing;
 }
 
-.sankey-node rect {
+#part3 .sankey-node rect {
     stroke: #ffffff;
     stroke-width: 0.8px;
     opacity: 0.9;
     transition: opacity 0.2s, stroke-width 0.2s;
 }
 
-.sankey-node:hover rect,
-.sankey-node.selected rect {
+#part3 .sankey-node:hover rect,
+#part3 .sankey-node.selected rect {
     opacity: 1;
     stroke: #dd6b20;
     stroke-width: 1.6px;
 }
 
-.sankey-node.context-node rect {
+#part3 .sankey-node.context-node rect {
     opacity: 0.32;
 }
 
-.sankey-label {
+#part3 .sankey-label {
     font-size: 12px;
     fill: #444444;
     dominant-baseline: middle;
     pointer-events: none;
 }
 
-.sankey-node.context-node .sankey-label {
+#part3 .sankey-node.context-node .sankey-label {
     fill: #999999;
 }
 
-.sankey-column-label {
+#part3 .sankey-column-label {
     font-size: 12px;
     fill: #777777;
 }
 
-/* ─── 6. 雷达图 ─── */
-.radar-grid {
+/* 7. 雷达图 */
+#part3 .radar-grid {
     fill: none;
     stroke: #eeeeee;
     stroke-width: 0.8px;
 }
 
-.radar-axis line {
+#part3 .radar-axis line {
     stroke: #e5e5e5;
     stroke-width: 0.8px;
 }
 
-.radar-axis-label {
+#part3 .radar-axis-label {
     font-size: 11px;
     fill: #444444;
 }
 
-.radar-axis-label.selected {
+#part3 .radar-axis-label.selected {
     fill: #dd6b20;
     font-weight: 600;
 }
 
-.radar-level {
+#part3 .radar-level {
     font-size: 10px;
     fill: #999999;
 }
 
-.radar-area {
+#part3 .radar-area {
     fill-opacity: 0.10;
     stroke-width: 1.6px;
 }
 
-.radar-line {
+#part3 .radar-line {
     fill: none;
     stroke-width: 1.8px;
 }
 
-.radar-point {
+#part3 .radar-point {
     stroke: #ffffff;
     stroke-width: 1px;
     cursor: pointer;
 }
 
-.radar-legend text,
-.trend-legend text {
+#part3 .radar-legend text {
     font-size: 12px;
     fill: #555555;
 }
 
-/* ─── 7. 折线图 ─── */
-.axis line,
-.axis path {
+/* 8. 趋势图：Part4 风格的学科热度变化图 */
+#part3 .axis line,
+#part3 .axis path {
     stroke: #e0e0e0;
     stroke-width: 0.6px;
 }
 
-.axis path {
+#part3 .axis path {
     display: none;
 }
 
-.axis text {
-    font-size: 12px;
+#part3 .axis text {
+    font-size: 13px;
     fill: #555555;
     font-family: inherit;
 }
 
-.grid line {
-    stroke: #f3f3f3;
+#part3 .grid line {
+    stroke: #eef1f4;
     stroke-dasharray: none;
 }
 
-.grid path {
+#part3 .grid path {
     display: none;
 }
 
-.axis-label {
-    font-size: 13px;
+#part3 .axis-label {
+    font-size: 14px;
     fill: #444444;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-.trend-line {
+#part3 .trend-period-title {
+    font-size: 16px;
+    font-weight: 800;
+    fill: #333333;
+}
+
+#part3 .trend-line {
     fill: none;
-    stroke-width: 2px;
     cursor: pointer;
-    opacity: 0.82;
+    transition: stroke-width 0.18s, opacity 0.18s;
 }
 
-.trend-series:hover .trend-line,
-.trend-series.selected .trend-line {
-    stroke-width: 2.8px;
+#part3 .trend-series:hover .trend-line,
+#part3 .trend-series.selected .trend-line {
+    stroke-width: 4px;
     opacity: 1;
 }
 
-.trend-point {
+#part3 .trend-point {
     stroke: #ffffff;
-    stroke-width: 1px;
+    stroke-width: 1.4px;
     cursor: pointer;
 }
 
-.trend-legend-item {
+#part3 .trend-end-label {
+    font-size: 14px;
+    fill: #333333;
     cursor: pointer;
+    dominant-baseline: middle;
 }
 
-/* ─── 8. 其他样式 ─── */
-.empty-state,
-.empty-state-text {
+#part3 .trend-end-label:hover {
+    fill: #162033;
+    text-decoration: underline;
+}
+
+#part3 .trend-label-guide {
+    pointer-events: none;
+}
+
+#part3 .trend-legend text {
+    font-size: 13px;
+    fill: #555555;
+}
+
+#part3 .trend-status-legend text {
+    font-size: 13px;
+    fill: #555555;
+}
+
+/* 9. 状态提示 */
+#part3 .empty-state,
+#part3 .empty-state-text {
     color: #777777;
     fill: #777777;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     padding-top: 80px;
 }
 
-.loading {
+#part3 .loading {
     margin: 22px 0;
     padding: 12px 14px;
     border: 1px solid #e8e8e8;
@@ -441,13 +518,13 @@ button:disabled {
     line-height: 1.8;
 }
 
-.loading.error {
+#part3 .loading.error {
     border-color: #e2b8b8;
     background: #fff8f8;
     color: #8a3434;
 }
 
-.loading code {
+#part3 .loading code {
     padding: 1px 5px;
     background: #f1f1f1;
     border-radius: 2px;
@@ -455,60 +532,933 @@ button:disabled {
     font-size: 13px;
 }
 
-.focus-status,
-button,
-.compare-pill,
-.chart-subtitle,
-.chart-note,
-.tooltip,
-.tooltip-hint,
-.sankey-label,
-.sankey-column-label,
-.radar-axis-label,
-.radar-level,
-.radar-legend text,
-.trend-legend text,
-.axis text,
-.axis-label,
-.empty-state,
-.empty-state-text,
-.loading,
-.loading code,
-.detail-tooltip,
-.cluster-analysis,
-.intro-title,
-.intro-text,
-.legend-item,
-.hint {
-    font-size: 16px !important;
-}
-
+/* 10. 小屏适配 */
 @media (max-width: 1100px) {
-    .container {
+    #part3 .container {
         padding: 28px 24px 44px;
     }
 
-    .subject-layout {
+    #part3 .subject-layout {
         grid-template-columns: 1fr;
     }
 
-    #sankeyChart {
+    #part3 #sankeyChart {
         height: 650px;
+        min-height: 620px;
     }
 
-    #radarChart {
+    #part3 #radarChart {
         min-height: 560px;
     }
 
-    #trendChart {
-        height: 430px;
+    #part3 #trendChart {
+        height: 560px;
     }
 
-    .country-actions {
+    #part3 .country-actions {
         width: 100%;
         margin-left: 0;
         margin-top: 8px;
     }
 }
 
+@media (max-width: 720px) {
+    #part3 .container {
+        padding: 24px 16px 36px;
+    }
 
+    #part3 h1 {
+        font-size: 24px;
+    }
+
+    #part3 .description,
+    #part3 .chart-wrapper,
+    #part3 .controls {
+        padding: 16px;
+    }
+
+    #part3 .control-group,
+    #part3 .control-group.grow {
+        width: 100%;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+    }
+
+    #part3 #sankeyChart {
+        height: 700px;
+    }
+
+    #part3 #trendChart {
+        height: 620px;
+    }
+}
+
+
+/* 11. 本次补充：趋势图语义色与 Part4 风格细节 */
+#part3 .trend-series.rising .trend-line {
+    stroke: #1a9850;
+}
+
+#part3 .trend-series.falling .trend-line {
+    stroke: #d73027;
+}
+
+#part3 .trend-series.flat .trend-line {
+    stroke: #969696;
+}
+
+#part3 .trend-series:hover .trend-point,
+#part3 .trend-series.selected .trend-point {
+    stroke-width: 2px;
+}
+
+#part3 .trend-period-axis {
+    shape-rendering: crispEdges;
+}
+
+#part3 .trend-label-left tspan:first-child,
+#part3 .trend-label-right tspan:first-child {
+    letter-spacing: 0.2px;
+}
+
+#part3 .trend-grid .tick line {
+    stroke: #eef1f4;
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终调整：横向空间、雷达高度、图中文字、趋势图避让
+   ───────────────────────────────────────────── */
+
+/* 1. 所有白色卡片框线左右展示空间加宽 */
+#part3 .container {
+    max-width: 1520px;
+    padding-left: 44px;
+    padding-right: 44px;
+}
+
+#part3 .chart-wrapper {
+    padding: 28px 42px 24px;
+}
+
+#part3 .subject-layout {
+    grid-template-columns: minmax(0, 1.7fr) minmax(360px, 0.8fr);
+    gap: 46px;
+}
+
+/* 2. 雷达图白色卡片框线高度适当减小 */
+#part3 #radarChart {
+    height: 460px;
+    min-height: 460px;
+}
+
+#part3 .radar-wrapper {
+    align-self: start;
+}
+
+/* 3. 可视化图像中文字适当放大；解释说明部分保持原大小 */
+#part3 .sankey-label {
+    font-size: 14px;
+}
+
+#part3 .sankey-column-label {
+    font-size: 14px;
+}
+
+#part3 .radar-axis-label {
+    font-size: 13px;
+}
+
+#part3 .radar-level {
+    font-size: 12px;
+}
+
+#part3 .radar-legend text,
+#part3 .trend-legend text {
+    font-size: 14px;
+}
+
+#part3 .axis text {
+    font-size: 14px;
+}
+
+#part3 .axis-label {
+    font-size: 15px;
+}
+
+#part3 .trend-period-label {
+    font-size: 20px;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right {
+    font-size: 16px;
+}
+
+#part3 .trend-label-muted {
+    font-size: 14px;
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-delta {
+    font-size: 13px;
+    fill: #8c96a3;
+}
+
+/* 4. 趋势图增加高度与标签区域，配合 JS 避让算法 */
+#part3 .trend-wrapper {
+    margin-top: 46px;
+}
+
+#part3 #trendChart {
+    height: 620px;
+    min-height: 620px;
+}
+
+#part3 .trend-line {
+    opacity: 0.86;
+}
+
+#part3 .trend-label-connectors path {
+    opacity: 0.88;
+}
+
+#part3 .trend-y-axis text {
+    fill: #7b8490;
+}
+
+/* 解释说明部分不放大 */
+#part3 .chart-note,
+#part3 .chart-note p,
+#part3 .compact-note,
+#part3 .interpretation,
+#part3 .interpretation p {
+    font-size: 13px;
+}
+
+/* 小屏仍保持单栏，避免横向挤压 */
+@media (max-width: 1100px) {
+    #part3 .container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    #part3 .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #part3 #radarChart {
+        height: 460px;
+        min-height: 460px;
+    }
+
+    #part3 #trendChart {
+        height: 660px;
+        min-height: 660px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终二次调整：趋势图比例尺、学科色、雷达标签避让
+   ───────────────────────────────────────────── */
+
+#part3 .container {
+    max-width: 1560px;
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+#part3 .chart-wrapper {
+    padding-left: 46px;
+    padding-right: 46px;
+}
+
+#part3 #trendChart {
+    height: 660px;
+    min-height: 660px;
+}
+
+#part3 .trend-period-label {
+    font-size: 22px;
+}
+
+#part3 .trend-grid-percent {
+    font-size: 14px;
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right {
+    font-size: 17px;
+}
+
+#part3 .trend-label-muted {
+    font-size: 15px;
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-delta {
+    font-size: 14px;
+}
+
+#part3 .trend-line {
+    stroke-linecap: round;
+    opacity: 0.9;
+}
+
+#part3 .trend-point {
+    stroke-width: 1.9px;
+}
+
+#part3 .trend-label-connectors path {
+    stroke: #d7dde5;
+    opacity: 0.92;
+}
+
+#part3 .trend-legend text {
+    font-size: 14px;
+}
+
+/* 雷达图：卡片保持较低高度，但 SVG 给足文字空间 */
+#part3 #radarChart {
+    height: 520px;
+    min-height: 520px;
+}
+
+#part3 .radar-axis-label {
+    font-size: 16px;
+    fill: #555555;
+}
+
+#part3 .radar-level {
+    font-size: 14px;
+}
+
+#part3 .radar-legend text {
+    font-size: 16px;
+}
+
+#part3 .radar-area {
+    fill-opacity: 0.08;
+}
+
+#part3 .radar-line {
+    stroke-width: 2.2px;
+}
+
+#part3 .radar-point {
+    stroke-width: 1.5px;
+}
+
+/* 说明部分不跟随放大 */
+#part3 .chart-note,
+#part3 .chart-note p,
+#part3 .compact-note,
+#part3 .interpretation,
+#part3 .interpretation p {
+    font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+    #part3 #trendChart {
+        height: 700px;
+        min-height: 700px;
+    }
+
+    #part3 #radarChart {
+        height: 560px;
+        min-height: 560px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V4：按反馈修正趋势图颜色、比例尺、雷达逻辑与国家选择色
+   ───────────────────────────────────────────── */
+
+#part3 #trendChart {
+    height: 700px;
+    min-height: 700px;
+}
+
+#part3 .trend-period-label {
+    font-size: 22px;
+}
+
+#part3 .trend-grid-percent {
+    font-size: 14px;
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right {
+    font-size: 17px;
+    fill: #333333;
+}
+
+#part3 .trend-label-left tspan:first-child,
+#part3 .trend-label-right tspan:first-child {
+    fill: #333333;
+}
+
+#part3 .trend-label-muted {
+    font-size: 15px;
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-delta {
+    font-size: 14px;
+}
+
+#part3 .trend-line {
+    stroke-linecap: round;
+    opacity: 0.9;
+}
+
+#part3 .trend-point {
+    stroke-width: 2px;
+}
+
+#part3 .trend-label-connectors path {
+    stroke: #d7dde5;
+    opacity: 0.92;
+}
+
+/* 雷达图：二级学科最多 8 个方向后，图形可进一步放大 */
+#part3 #radarChart {
+    height: 560px;
+    min-height: 560px;
+}
+
+#part3 .radar-axis-label {
+    font-size: 17px;
+    fill: #555555;
+}
+
+#part3 .radar-level {
+    font-size: 15px;
+}
+
+#part3 .radar-legend text {
+    font-size: 16px;
+}
+
+#part3 .radar-area {
+    fill-opacity: 0.08;
+}
+
+#part3 .radar-line {
+    stroke-width: 2.4px;
+}
+
+#part3 .radar-point {
+    stroke-width: 1.6px;
+}
+
+/* 国家选项栏：选中项由 JS 写入国家色，这里只补足选中态质感 */
+#part3 .compare-pill.selected {
+    border-width: 1.5px;
+    font-weight: 700;
+}
+
+#part3 .compare-pill.selected span {
+    color: inherit;
+}
+
+/* 说明部分不放大 */
+#part3 .chart-note,
+#part3 .chart-note p,
+#part3 .compact-note,
+#part3 .interpretation,
+#part3 .interpretation p {
+    font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+    #part3 #trendChart {
+        height: 740px;
+        min-height: 740px;
+    }
+
+    #part3 #radarChart {
+        height: 600px;
+        min-height: 600px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V5：修正趋势图线条配色、增减幅红绿、雷达角度重复
+   ───────────────────────────────────────────── */
+
+#part3 #trendChart {
+    height: 720px;
+    min-height: 720px;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right,
+#part3 .trend-label-left tspan:first-child,
+#part3 .trend-label-right tspan:first-child {
+    fill: #333333;
+    color: #333333;
+}
+
+#part3 .trend-label-delta {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#part3 .trend-line {
+    stroke-linecap: round;
+    opacity: 0.9;
+}
+
+#part3 .trend-grid-percent {
+    font-size: 14px;
+    fill: #8c96a3;
+}
+
+/* 雷达图：使用非重复角度后，文字靠近图形，避免外侧被裁切 */
+#part3 #radarChart {
+    height: 560px;
+    min-height: 560px;
+}
+
+#part3 .radar-axis-label {
+    font-size: 17px;
+    fill: #555555;
+}
+
+#part3 .radar-level {
+    font-size: 15px;
+}
+
+#part3 .radar-line {
+    stroke-width: 2.4px;
+}
+
+#part3 .radar-point {
+    stroke-width: 1.6px;
+}
+
+#part3 .radar-legend text {
+    font-size: 16px;
+}
+
+/* 说明部分不放大 */
+#part3 .chart-note,
+#part3 .chart-note p,
+#part3 .compact-note,
+#part3 .interpretation,
+#part3 .interpretation p {
+    font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+    #part3 #trendChart {
+        height: 760px;
+        min-height: 760px;
+    }
+
+    #part3 #radarChart {
+        height: 600px;
+        min-height: 600px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V6：趋势图标签加入排名，移除图例；加宽雷达图白色卡片
+   ───────────────────────────────────────────── */
+
+/* 雷达图卡片加宽：让轴标签与图例有更充足左右空间 */
+#part3 .subject-layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(620px, 1.05fr);
+    gap: 48px;
+}
+
+#part3 .radar-wrapper {
+    min-width: 620px;
+}
+
+#part3 #radarChart {
+    height: 580px;
+    min-height: 580px;
+}
+
+/* 趋势图标签排名样式 */
+#part3 .trend-label-rank {
+    font-size: 15px;
+    fill: #5f6b7a;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right {
+    font-size: 17px;
+}
+
+#part3 .trend-label-muted {
+    font-size: 15px;
+}
+
+#part3 .trend-label-delta {
+    font-size: 14px;
+}
+
+/* 趋势图已移除底部图例，减少下方空白 */
+#part3 #trendChart {
+    height: 700px;
+    min-height: 700px;
+}
+
+@media (max-width: 1250px) {
+    #part3 .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #part3 .radar-wrapper {
+        min-width: 0;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V7：缩小雷达卡片，删除当前口径卡片，趋势文字色相改红
+   ───────────────────────────────────────────── */
+
+/* 右侧雷达图卡片整体缩小，但保留完整文字空间 */
+#part3 .subject-layout {
+    grid-template-columns: minmax(0, 1.55fr) minmax(520px, 0.9fr);
+    gap: 44px;
+}
+
+#part3 .radar-wrapper {
+    min-width: 520px;
+    padding-left: 34px;
+    padding-right: 34px;
+}
+
+#part3 #radarChart {
+    height: 500px;
+    min-height: 500px;
+}
+
+/* 删除雷达图下方“当前口径”卡片，为颜色图例留空间 */
+#part3 #radarCaption,
+#part3 .radar-wrapper #radarCaption,
+#part3 .compact-note#radarCaption {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 雷达图在缩小后适度收敛字号，保证文字完整显示 */
+#part3 .radar-axis-label {
+    font-size: 15px;
+}
+
+#part3 .radar-level {
+    font-size: 13px;
+}
+
+#part3 .radar-legend text {
+    font-size: 15px;
+}
+
+/* 变化趋势：其他设置不变，只把偏蓝灰辅助文字色相调为偏红灰 */
+#part3 .trend-label-rank {
+    fill: #a66f6f;
+}
+
+#part3 .trend-label-muted {
+    fill: #b88a8a;
+}
+
+#part3 .trend-grid-percent {
+    fill: #b88a8a;
+}
+
+/* 小屏仍单栏，避免右侧卡片横向溢出 */
+@media (max-width: 1250px) {
+    #part3 .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #part3 .radar-wrapper {
+        min-width: 0;
+    }
+
+    #part3 #radarChart {
+        height: 520px;
+        min-height: 520px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V8：雷达图形缩小、趋势图竖线间距缩小、仅排名序号变红
+   ───────────────────────────────────────────── */
+
+/* 右侧雷达图卡片略缩小，但卡片高度保持 580px */
+#part3 .subject-layout {
+    grid-template-columns: minmax(0, 1.62fr) minmax(500px, 0.82fr);
+    gap: 40px;
+}
+
+#part3 .radar-wrapper {
+    min-width: 500px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#part3 #radarChart {
+    height: 580px;
+    min-height: 580px;
+}
+
+/* 雷达图本体由 JS 缩小；文字保持可读 */
+#part3 .radar-axis-label {
+    font-size: 15px;
+}
+
+#part3 .radar-level {
+    font-size: 13px;
+}
+
+#part3 .radar-legend text {
+    font-size: 15px;
+}
+
+/* 趋势图：卡片左右占用减小，两条竖线间距由 JS 缩小 */
+#part3 #trendChart {
+    height: 700px;
+    min-height: 700px;
+}
+
+/* 仅排名序号 No.x 改为红色；百分比等说明文字恢复原蓝灰色 */
+#part3 .trend-label-rank {
+    font-size: 15px;
+    fill: #a66f6f;
+}
+
+#part3 .trend-label-muted {
+    fill: #8c96a3;
+}
+
+#part3 .trend-grid-percent {
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right,
+#part3 .trend-label-left tspan:first-child,
+#part3 .trend-label-right tspan:first-child {
+    fill: #333333;
+    color: #333333;
+}
+
+/* 保持删除当前口径卡片 */
+#part3 #radarCaption,
+#part3 .radar-wrapper #radarCaption,
+#part3 .compact-note#radarCaption {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+@media (max-width: 1250px) {
+    #part3 .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #part3 .radar-wrapper {
+        min-width: 0;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V9：显著缩小趋势图竖线间距，雷达图上移
+   ───────────────────────────────────────────── */
+
+/* 趋势图整体左右区域继续压缩；竖线间距由 JS lineGapRatio=0.56 控制 */
+#part3 #trendChart {
+    height: 700px;
+    min-height: 700px;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right {
+    font-size: 16px;
+}
+
+#part3 .trend-label-rank {
+    font-size: 14px;
+    fill: #a66f6f;
+}
+
+#part3 .trend-label-muted,
+#part3 .trend-grid-percent {
+    fill: #8c96a3;
+}
+
+/* 雷达图卡片高度保持 580px；图形本体由 JS 上移并缩小 */
+#part3 #radarChart {
+    height: 580px;
+    min-height: 580px;
+}
+
+#part3 .radar-wrapper {
+    min-width: 500px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#part3 .radar-axis-label {
+    font-size: 15px;
+}
+
+#part3 .radar-legend text {
+    font-size: 15px;
+}
+
+/* 防止图例靠底部时被外层裁切 */
+#part3 .radar-wrapper,
+#part3 #radarChart {
+    overflow: visible;
+}
+
+@media (max-width: 1250px) {
+    #part3 .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #part3 .radar-wrapper {
+        min-width: 0;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V10：趋势图参考线随竖线收窄，趋势卡片收窄，雷达高度 640
+   ───────────────────────────────────────────── */
+
+/* 趋势图白色卡片随图像明显减小并居中 */
+#part3 .trend-wrapper {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 趋势图高度和内部设置沿用 V9，仅 reference line 由 JS 限定到两条竖线之间 */
+#part3 #trendChart {
+    height: 700px;
+    min-height: 700px;
+}
+
+/* 雷达图卡片高度增加为 640px，其余逻辑不变 */
+#part3 #radarChart {
+    height: 640px;
+    min-height: 640px;
+}
+
+#part3 .radar-wrapper {
+    min-width: 500px;
+    overflow: visible;
+}
+
+#part3 .radar-wrapper,
+#part3 #radarChart {
+    overflow: visible;
+}
+
+@media (max-width: 1250px) {
+    #part3 .trend-wrapper {
+        max-width: none;
+    }
+
+    #part3 #radarChart {
+        height: 640px;
+        min-height: 640px;
+    }
+}
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V11：雷达本体上移，趋势百分比贴左轴，右侧排名按变化着色
+   ───────────────────────────────────────────── */
+
+/* 雷达卡片高度仍保持 640px；本体位置由 JS 上移 */
+#part3 #radarChart {
+    height: 640px;
+    min-height: 640px;
+}
+
+#part3 .radar-wrapper,
+#part3 #radarChart {
+    overflow: visible;
+}
+
+/* 趋势图百分比参考标记仍保持原蓝灰，只是位置改到左黑线右侧 */
+#part3 .trend-grid-percent {
+    fill: #8c96a3;
+}
+
+/* 左侧 No.x 仍为红灰；右侧 No.x 若排名变化，由 JS inline style 改为红/绿 */
+#part3 .trend-label-rank {
+    font-size: 14px;
+    fill: #a66f6f;
+}
+
+#part3 .trend-label-muted {
+    fill: #8c96a3;
+}
+
+#part3 .trend-label-left,
+#part3 .trend-label-right,
+#part3 .trend-label-left tspan:first-child,
+#part3 .trend-label-right tspan:first-child {
+    fill: #333333;
+    color: #333333;
+}
+
+/* 其他设置保持 V10 不变 */
+
+
+/* ─────────────────────────────────────────────
+   Part3 最终 V12：雷达图例上移，右侧学科名按排名变化着色
+   ───────────────────────────────────────────── */
+
+/* 雷达图图例位置由 JS 上移到 height - 158；这里保证不裁切 */
+#part3 .radar-wrapper,
+#part3 #radarChart {
+    overflow: visible;
+}
+
+/* 右侧 No.x 排名统一红灰；右侧学科名称由 JS inline style 按排名变化着色 */
+#part3 .trend-label-rank {
+    fill: #a66f6f;
+    color: #a66f6f;
+}
+
+#part3 .trend-label-muted,
+#part3 .trend-grid-percent {
+    fill: #8c96a3;
+}
+
+/* 不覆盖右侧学科名的 inline style；其他文本仍保持原设置 */
+#part3 .trend-label-left,
+#part3 .trend-label-left tspan:first-child {
+    fill: #333333;
+    color: #333333;
+}

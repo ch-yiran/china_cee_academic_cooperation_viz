@@ -1,21 +1,32 @@
+/* 最顶层全局重置 - 确保没有任何地方有灰色背景 */
+html, body, #root, #app, .app-container {
+    background-color: #ffffff !important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* 强制所有元素继承白色背景，除非明确指定 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Times New Roman", "SimSun", serif;
+    background-color: inherit;
 }
 
 body {
-    background-color: #ffffff; /* 纯白纸背景 */
     color: #333333; /* 学术论文标准深灰色文字 */
     line-height: 1.6;
     font-size: 16px;
+    background-color: #ffffff !important;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 60px 56px;
+    background-color: #ffffff !important; /* 强制容器纯白背景 */
 }
 
 h1 {
@@ -51,8 +62,8 @@ h1 {
     align-items: center;
     margin-bottom: 45px; /* 调整与图表的间距 */
     padding: 14px 18px;
-    background-color: transparent;
-    border: 1px solid #e7ebf1;
+    background-color: #ffffff !important; /* 纯白白底，替换透明 */
+    border: 1px solid #f0f0f0; /* 极淡白灰色边框，几乎看不见 */
     border-radius: 16px;
     box-shadow: none;
     flex-wrap: wrap;
@@ -79,9 +90,9 @@ h1 {
 
 select, button {
     padding: 8px 14px;
-    border: 1px solid #dddddd; /* 极淡边框 */
+    border: 1px solid #f0f0f0; /* 极淡边框，纯白视觉 */
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color: #ffffff !important; /* 纯白按钮背景 */
     cursor: pointer;
     font-size: 16px;
     color: #444444;
@@ -90,18 +101,19 @@ select, button {
 }
 
 button:hover {
-    background-color: #f9f9f9;
-    border-color: #cccccc;
+    background-color: #fafafa !important; /* 极淡白 hover 色，无灰度 */
+    border-color: #e0e0e0;
 }
 
 .charts-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 36px; /* 调整图表间距 */
+    background-color: #ffffff !important;
 }
 
 .chart-wrapper {
-    background-color: transparent; /* 透明背景 */
+    background-color: #ffffff !important; /* 强制纯白背景，替换透明 */
     border-radius: 0; /* 去掉圆角 */
     box-shadow: none; /* 去掉阴影 */
     padding: 0; /* 去掉内边距 */
@@ -115,9 +127,11 @@ button:hover {
     font-size: 20px;
 }
 
-#bubbleChart, #barChart {
+/* 关键修复：强制SVG图表背景为白色 */
+#bubbleChart, #barChart, svg {
     width: 100%;
     height: 480px;
+    background-color: #ffffff !important; /* 图表区域纯白 */
 }
 
 .chart-note {
@@ -127,21 +141,22 @@ button:hover {
     line-height: 1.8;
     padding-left: 0; /* 去掉左边框 */
     border-left: none; /* 去掉左边框 */
+    background-color: #ffffff !important;
 }
 
 .tooltip {
     position: absolute;
     padding: 10px 14px;
-    background-color: rgba(255, 255, 255, 0.95); /* 白色半透明提示框 */
+    background-color: #ffffff !important; /* 纯白白底，移除半透明灰度 */
     color: #333333;
-    border: 1px solid #dddddd; /* 极淡边框 */
+    border: 1px solid #f0f0f0; /* 极淡边框 */
     border-radius: 10px;
     pointer-events: none;
     font-size: 16px;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* 极淡阴影 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 极淡阴影，不影响纯白 */
     line-height: 1.6;
 }
 
@@ -191,7 +206,7 @@ button:hover {
 
 .axis line,
 .axis path {
-    stroke: #e0e0e0; /* 极淡坐标轴线条 */
+    stroke: #f5f5f5; /* 超淡白色线条，完全不显灰 */
     stroke-width: 0.6px; /* 更细的线条 */
 }
 
@@ -202,12 +217,12 @@ button:hover {
 }
 
 .grid line {
-    stroke: #f5f5f5; /* 几乎看不见的网格线 */
+    stroke: #fafafa; /* 极致淡白网格线，几乎隐形 */
     stroke-dasharray: none; /* 去掉虚线，用实线更像论文 */
 }
 
 .equal-growth-line {
-    stroke: #bbbbbb; /* 淡灰色等增长线 */
+    stroke: #eeeeee; /* 淡白色等增长线，无灰度 */
     stroke-width: 1px;
     stroke-dasharray: 4,4;
 }
@@ -219,6 +234,7 @@ button:hover {
     transform: translate(-50%, -50%);
     font-size: 16px;
     color: #666666;
+    background-color: transparent !important;
 }
 
 /* 隐藏坐标轴的外框 */
@@ -246,11 +262,7 @@ button:hover {
     fill: #555555;
 }
 
-#loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    color: #666666;
+/* 终极兜底：如果还有灰色，强制所有元素背景为白色 */
+body > * {
+    background-color: #ffffff !important;
 }
